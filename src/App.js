@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import SearchBar from './components/SearchBar';
+import RepositoryList from './components/RepositoryList';
+import GitHubService from './services/GitHubService';
 
-function App() {
+const App = () => {
+  const [repositories, setRepositories] = useState([]);
+
+  const searchRepositories = async (query) => {
+    const repos = await GitHubService.searchRepositories(query);
+    setRepositories(repos);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App text-center">
+      <h1>Github Repository Search</h1>
+      <SearchBar onSearch={searchRepositories} />
+      <RepositoryList repositories={repositories} />
     </div>
   );
-}
+};
 
 export default App;
